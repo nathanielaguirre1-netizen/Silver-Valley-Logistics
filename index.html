@@ -609,19 +609,6 @@ let unsubs=[];
 // ── FACTORING STATE ──
 let isFactored = false;
 
-window.setFactored = function(val){
-  isFactored = val;
-  document.getElementById('factorYes').className = 'factor-btn' + (val ? ' active-yes' : '');
-  document.getElementById('factorNo').className = 'factor-btn' + (!val ? ' active-no' : '');
-  document.getElementById('factorFeeWrap').style.display = val ? 'block' : 'none';
-  document.getElementById('factorNetDisplay').style.display = val ? 'block' : 'none';
-  if(!val) document.getElementById('loadFactorFee').value = '';
-  updateLoadCalcs();
-};
-
-// Initialize factored buttons to "No"
-window.setFactored(false);
-
 // ── LIVE LOAD CALC ──
 window.updateLoadCalcs = function(){
   const miles = parseFloat(document.getElementById('loadMiles').value) || 0;
@@ -658,6 +645,16 @@ window.updateLoadCalcs = function(){
   if(isFactored){
     document.getElementById('factorNetValue').textContent = '$' + Math.round(netAfterFactor).toLocaleString();
   }
+};
+
+window.setFactored = function(val){
+  isFactored = val;
+  document.getElementById('factorYes').className = 'factor-btn' + (val ? ' active-yes' : '');
+  document.getElementById('factorNo').className = 'factor-btn' + (!val ? ' active-no' : '');
+  document.getElementById('factorFeeWrap').style.display = val ? 'block' : 'none';
+  document.getElementById('factorNetDisplay').style.display = val ? 'block' : 'none';
+  if(!val) document.getElementById('loadFactorFee').value = '';
+  updateLoadCalcs();
 };
 
 function unsubscribeListeners(){ unsubs.forEach(u=>u()); unsubs=[]; }
@@ -1168,6 +1165,7 @@ function fd(d){if(!d)return'—';const[y,m,day]=d.split('-');return`${m}/${day}/
 document.getElementById('monthLabel').textContent=monthLabel();
 document.getElementById('loadDate').valueAsDate=new Date();
 document.getElementById('extraDate').valueAsDate=new Date();
+setFactored(false);
 setSyncDot('syncing');
 setupListeners();
 setTimeout(()=>{document.getElementById('loadingScreen').style.display='none';setSyncDot('online');},1800);
